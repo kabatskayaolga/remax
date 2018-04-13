@@ -26,6 +26,19 @@ global $myhome_estate_carousel;
 							);
 						endif; ?>
 					</div>
+					<div class="mh-estate-vertical__primary">
+						<?php if ( $myhome_estate->has_price() ) : ?>
+							<?php foreach ( $myhome_estate->get_prices() as $myhome_price ) : ?>
+								<div <?php if ( $myhome_price->is_range() ) : ?>class="mh-price__range" <?php endif; ?>>
+									<?php echo esc_html( $myhome_price->get_formatted() ); ?>
+								</div>
+							<?php endforeach;; ?>
+						<?php else : ?>
+							<div class="mh-price__contact">
+								<?php echo esc_html( $myhome_estate->get_contact_for_price_text() ); ?>
+							</div>
+						<?php endif; ?>
+					</div>
 
 					<?php
 					$myhome_estate_offer_types = $myhome_estate->get_offer_type();
@@ -46,11 +59,7 @@ global $myhome_estate_carousel;
 						</div>
 					<?php endif; ?>
 
-					<div class="mh-estate-vertical__text">
-						<div class="mh-estate-vertical__text__inner">
-							<?php echo esc_html( $myhome_estate->get_excerpt() ); ?>
-						</div>
-					</div>
+					
 				</a>
 
 				<div class="mh-estate-vertical__content">
@@ -69,19 +78,7 @@ global $myhome_estate_carousel;
 						<?php echo esc_html( $myhome_estate->get_address() ); ?>
 					</address>
 
-					<div class="mh-estate-vertical__primary">
-						<?php if ( $myhome_estate->has_price() ) : ?>
-							<?php foreach ( $myhome_estate->get_prices() as $myhome_price ) : ?>
-								<div <?php if ( $myhome_price->is_range() ) : ?>class="mh-price__range" <?php endif; ?>>
-									<?php echo esc_html( $myhome_price->get_formatted() ); ?>
-								</div>
-							<?php endforeach;; ?>
-						<?php else : ?>
-							<div class="mh-price__contact">
-								<?php echo esc_html( $myhome_estate->get_contact_for_price_text() ); ?>
-							</div>
-						<?php endif; ?>
-					</div>
+					
 
 					<div>
 						<div class="mh-estate__list">
@@ -114,6 +111,11 @@ global $myhome_estate_carousel;
                                 </span>
 
 							<?php endforeach; ?>
+							<div class="">
+						<div class="">
+							<?php echo esc_html( $myhome_estate->get_excerpt() ); ?>
+						</div>
+					</div>
 						</div>
 					</div>
 

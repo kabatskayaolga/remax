@@ -20,9 +20,11 @@ $myhome_top_header_class        = '';
 if ( $myhome_sticky_menu == 1 ) { ?>
 
 <div class="mh-fixed-menu mh-fixed-menu--transparent-<?php echo $myhome_sticky_menu_transparent; ?>">
-	<?php }
+	<?php } ?>
 
-	if ( $myhome_top_header_style == 'small-primary' ) {
+
+	
+	<?php if ( $myhome_top_header_style == 'small-primary' ) {
 		$myhome_top_header_class = 'mh-top-header--primary';
 	} elseif ( $myhome_top_header_style == 'small' ) {
 		$myhome_top_header_class = 'mh-top-header--default';
@@ -40,8 +42,116 @@ if ( $myhome_sticky_menu == 1 ) { ?>
 				<div class="mh-top-header <?php echo esc_attr( $myhome_top_header_class ); ?>">
 
 					<div class="mh-layout">
+						<div class="mh-navbar__menu">
+							<?php
+							if ( has_nav_menu( 'mh-primary' ) ) :
+								wp_nav_menu( array( 'theme_location' => 'mh-primary' ) );
+							else:
+								wp_nav_menu();
+							endif;
+							?>
+							<?php if ( My_Home_Theme()->layout->has_header_social_icons() ) : ?>
+							<span class="mh-top-header__element mh-top-header__element--social-icons">
+								<?php get_template_part( 'templates/header', 'social-icons' ); ?>
+							</span>
+						<?php endif; ?>
+						</div>
+						
+						
+					</div>
+				</div>
+			<?php elseif ( $myhome_top_header_style == 'big' ): ?>
 
-						<?php
+				<div class="mh-top-header-big">
+					<div class="mh-top-header-big__content">
+
+						<?php if ( My_Home_Theme()->layout->has_big_top_logo() ) : ?>
+							<div class="mh-top-header-big__logo-placeholder">
+								<a href="<?php echo esc_url( site_url() ); ?>" class="mh-top-header-big__logo">
+									<img src="<?php echo esc_url( My_Home_Theme()->layout->get_big_top_logo() ); ?>"
+										 alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
+								</a>
+							</div>
+						<?php endif; ?>
+
+						
+
+						<?php if ( My_Home_Theme()->layout->has_header_address() ) : ?>
+							<div class="mh-top-header-big__element mh-top-header-big__element--address">
+								<i class="flaticon-pin mh-top-header-big__element__icon-big"></i>
+								<div class="mh-top-header-big__value">
+									<?php echo esc_html( My_Home_Theme()->layout->get_header_address() ); ?>
+								</div>
+							</div>
+						<?php endif;
+
+						if ( My_Home_Theme()->layout->has_header_email() ) : ?>
+							<div class="mh-top-header-big__element mh-top-header-big__element--email">
+								<a href="mailto:<?php echo esc_html( My_Home_Theme()->layout->get_header_email() ); ?>">
+									<i class="flaticon-mail-2 mh-top-header-big__element__icon-big"></i>
+									<div class="mh-top-header-big__value">
+										<?php echo esc_html( My_Home_Theme()->layout->get_header_email() ); ?>
+									</div>
+								</a>
+							</div>
+						<?php endif;?>
+
+						<?php if ( My_Home_Theme()->layout->has_header_phone() ) : ?>
+							<div class="mh-top-header-big__element  mh-top-header-big__element--phone">
+								<a href="tel:<?php echo esc_html( My_Home_Theme()->layout->get_header_phone_href() ); ?>">
+									<i class="flaticon-phone mh-top-header-big__element__icon-big"></i>
+									<div class="mh-top-header-big__value">
+										<?php echo esc_html( My_Home_Theme()->layout->get_header_phone() ); ?>
+									</div>
+								</a>
+							</div>
+						<?php endif;?>
+
+						<?php 
+
+						if ( My_Home_Theme()->layout->has_header_social_icons() ) : ?>
+							<div class="mh-top-header-big__social-icons">
+								<?php get_template_part( 'templates/header', 'social-icons' ); ?>
+							</div>
+						<?php endif; ?>
+
+						<?php if ( My_Home_Theme()->layout->agent_mode() ) : ?>
+							<div class="mh-top-bar-user-panel">
+								<user-bar id="myhome-user-bar"></user-bar>
+							</div>
+						<?php endif; ?>
+					</div>
+				</div>
+			<?php endif; ?>
+
+			<?php if ( My_Home_Theme()->layout->is_mega_main_menu_active() && has_nav_menu( 'mh-primary' ) ) : ?>
+				<div class="<?php echo esc_attr( My_Home_Theme()->layout->header_class() ); ?>">
+					<?php wp_nav_menu( array( 'theme_location' => 'mh-primary' ) ); ?>
+				</div>
+			<?php else : ?>
+				<div class="mh-navbar__wrapper">
+					<nav class="mh-navbar">
+						<div class="mh-navbar__container">
+							<div class="mh-navbar__header">
+								<?php if ( My_Home_Theme()->layout->has_logo() ) : ?>
+									<a href="<?php echo esc_url( home_url() ); ?>" class="mh-navbar__brand"
+									   title="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
+										<img src="<?php echo esc_url( My_Home_Theme()->layout->get_logo() ); ?>"
+											 alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
+									</a>
+								<?php else : ?>
+									<a href="<?php echo esc_url( home_url() ); ?>" class="mh-navbar__blog-name"
+									   title="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
+										<?php echo esc_html( get_bloginfo( 'name' ) ); ?>
+									</a>
+								<?php endif; ?>
+								<div class="mh-navbar__toggle">
+                                    <span class="mh-navbar__toggle-icon">
+                                        <i class="fa fa-bars" aria-hidden="true"></i>
+                                    </span>
+								</div>
+
+								<?php
 						$myhome_currency_switcher    = My_Home_Theme()->settings->get( 'currency_switcher' );
 						$myhome_default_currency     = My_Home_Theme()->settings->get( 'currency_switcher-default' );
 
@@ -92,145 +202,55 @@ if ( $myhome_sticky_menu == 1 ) { ?>
 							</div>
 						<?php endif; ?>
 
-						<?php if ( My_Home_Theme()->layout->has_header_phone() ) : ?>
-							<span class="mh-top-header__element mh-top-header__element--phone">
-								<a href="tel:<?php echo esc_html( My_Home_Theme()->layout->get_header_phone_href() ); ?>">
-									<i class="flaticon-phone"></i>
-									<?php echo esc_html( My_Home_Theme()->layout->get_header_phone() ); ?>
-								</a>
-							</span>
-						<?php endif; ?>
+						
+						<span class="mh-top-header__element mh-top-header__element--mail">
 
 						<?php if ( My_Home_Theme()->layout->has_header_address() ) : ?>
-							<span class="mh-top-header__element">
+							
 								<address>
-									<i class="flaticon-pin"></i>
+									<i class="flaticon-pin2"></i>
 									<?php echo esc_html( My_Home_Theme()->layout->get_header_address() ); ?>
 								</address>
-							</span>
+						
 						<?php endif; ?>
-
+						
+						
 						<?php if ( My_Home_Theme()->layout->has_header_email() ) : ?>
-							<span class="mh-top-header__element mh-top-header__element--mail">
+							
 								<a href="mailto:<?php echo esc_html( My_Home_Theme()->layout->get_header_email() ); ?>">
-									<i class="flaticon-mail-2"></i>
+									<i class="flaticon-close-envelope"></i>
 									<?php echo esc_html( My_Home_Theme()->layout->get_header_email() ); ?>
 								</a>
-							</span>
+							
 						<?php endif; ?>
 
-						<?php if ( My_Home_Theme()->layout->has_header_social_icons() ) : ?>
-							<span class="mh-top-header__element mh-top-header__element--social-icons">
-								<?php get_template_part( 'templates/header', 'social-icons' ); ?>
-							</span>
-						<?php endif; ?>
-
-						<div class="mh-top-bar-user-panel-small">
-							<?php if ( My_Home_Theme()->layout->agent_mode() ) : ?>
-								<div class="mh-top-bar-user-panel">
-									<user-bar id="myhome-user-bar"></user-bar>
-								</div>
-							<?php endif; ?>
-						</div>
-					</div>
-				</div>
-			<?php elseif ( $myhome_top_header_style == 'big' ): ?>
-
-				<div class="mh-top-header-big">
-					<div class="mh-top-header-big__content">
-
-						<?php if ( My_Home_Theme()->layout->has_big_top_logo() ) : ?>
-							<div class="mh-top-header-big__logo-placeholder">
-								<a href="<?php echo esc_url( site_url() ); ?>" class="mh-top-header-big__logo">
-									<img src="<?php echo esc_url( My_Home_Theme()->layout->get_big_top_logo() ); ?>"
-										 alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
-								</a>
-							</div>
-						<?php endif; ?>
+						</span>
 
 						<?php if ( My_Home_Theme()->layout->has_header_phone() ) : ?>
-							<div class="mh-top-header-big__element  mh-top-header-big__element--phone">
-								<a href="tel:<?php echo esc_html( My_Home_Theme()->layout->get_header_phone_href() ); ?>">
-									<i class="flaticon-phone mh-top-header-big__element__icon-big"></i>
-									<div class="mh-top-header-big__value">
-										<?php echo esc_html( My_Home_Theme()->layout->get_header_phone() ); ?>
-									</div>
+							<span class="mh-top-header__element mh-top-header__element--phone">
+								<a href="tel:0487358885 ">
+									<i class="flaticon-phone"></i>
+									<span class="small">(048)</span> 735-88-85 
 								</a>
-							</div>
-						<?php endif;
-
-						if ( My_Home_Theme()->layout->has_header_address() ) : ?>
-							<div class="mh-top-header-big__element mh-top-header-big__element--address">
-								<i class="flaticon-pin mh-top-header-big__element__icon-big"></i>
-								<div class="mh-top-header-big__value">
-									<?php echo esc_html( My_Home_Theme()->layout->get_header_address() ); ?>
+								<div>
+								<button class="mdl-button--advanced mdl-button mdl-button-red mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" data-upgraded=",MaterialButton,MaterialRipple">
+									Заказать звонок
+								<span class="mdl-button__ripple-container"><span class="mdl-ripple is-animating" ></span></span></button>
 								</div>
-							</div>
-						<?php endif;
-
-						if ( My_Home_Theme()->layout->has_header_email() ) : ?>
-							<div class="mh-top-header-big__element mh-top-header-big__element--email">
-								<a href="mailto:<?php echo esc_html( My_Home_Theme()->layout->get_header_email() ); ?>">
-									<i class="flaticon-mail-2 mh-top-header-big__element__icon-big"></i>
-									<div class="mh-top-header-big__value">
-										<?php echo esc_html( My_Home_Theme()->layout->get_header_email() ); ?>
-									</div>
-								</a>
-							</div>
-						<?php endif;
-
-						if ( My_Home_Theme()->layout->has_header_social_icons() ) : ?>
-							<div class="mh-top-header-big__social-icons">
-								<?php get_template_part( 'templates/header', 'social-icons' ); ?>
-							</div>
+							</span>
 						<?php endif; ?>
 
-						<?php if ( My_Home_Theme()->layout->agent_mode() ) : ?>
-							<div class="mh-top-bar-user-panel">
-								<user-bar id="myhome-user-bar"></user-bar>
-							</div>
-						<?php endif; ?>
-					</div>
-				</div>
-			<?php endif; ?>
+						<div class='button-agent'>
+							<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary-ghost mdl-button--clear" data-upgraded=",MaterialButton,MaterialRipple">
+						Вход для агентов
+							<span class="mdl-button__ripple-container"><span class="mdl-ripple is-animating" style="width: 252.567px; height: 252.567px; transform: translate(-50%, -50%) translate(69px, 21px);"></span></span></button>
+						</div>
 
-			<?php if ( My_Home_Theme()->layout->is_mega_main_menu_active() && has_nav_menu( 'mh-primary' ) ) : ?>
-				<div class="<?php echo esc_attr( My_Home_Theme()->layout->header_class() ); ?>">
-					<?php wp_nav_menu( array( 'theme_location' => 'mh-primary' ) ); ?>
-				</div>
-			<?php else : ?>
-				<div class="mh-navbar__wrapper">
-					<nav class="mh-navbar">
-						<div class="mh-navbar__container">
-							<div class="mh-navbar__header">
-								<?php if ( My_Home_Theme()->layout->has_logo() ) : ?>
-									<a href="<?php echo esc_url( home_url() ); ?>" class="mh-navbar__brand"
-									   title="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
-										<img src="<?php echo esc_url( My_Home_Theme()->layout->get_logo() ); ?>"
-											 alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
-									</a>
-								<?php else : ?>
-									<a href="<?php echo esc_url( home_url() ); ?>" class="mh-navbar__blog-name"
-									   title="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
-										<?php echo esc_html( get_bloginfo( 'name' ) ); ?>
-									</a>
-								<?php endif; ?>
-								<div class="mh-navbar__toggle">
-                                    <span class="mh-navbar__toggle-icon">
-                                        <i class="fa fa-bars" aria-hidden="true"></i>
-                                    </span>
-								</div>
+					
+
 							</div>
 
-							<div class="mh-navbar__menu">
-								<?php
-								if ( has_nav_menu( 'mh-primary' ) ) :
-									wp_nav_menu( array( 'theme_location' => 'mh-primary' ) );
-								else:
-									wp_nav_menu();
-								endif;
-								?>
-							</div>
+							
 						</div>
 					</nav>
 				</div>
